@@ -6,5 +6,6 @@ namespace ExpenseTracker.Data.Services
     {
         Task<IEnumerable<Expense>> GetAllExpensesAsync();
         Task Add(Expense expense);
+        List<object> GetChart();
     }
 }

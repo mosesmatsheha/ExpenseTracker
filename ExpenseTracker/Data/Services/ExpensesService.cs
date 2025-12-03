@@ -23,5 +23,20 @@ namespace ExpenseTracker.Data.Services
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
         }
+        public  List<object> GetChart()
+        {
+            var dataCategory = _context.Expenses
+                .GroupBy(e => e.Type)
+                .Select(g => new
+                {
+                    Type = g.Key,
+                    TotalAmount = g.Sum(e => e.Amount)
+                }).ToList<object>();
+            foreach (var item in dataCategory)
+            {
+                Console.WriteLine($"{item}");
+            }
+            return dataCategory;
+        }
     }
 }

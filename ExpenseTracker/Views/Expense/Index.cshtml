@@ -1,6 +1,7 @@
-﻿@model IEnumerable<ExpenseTracker.Models.Expense>
+﻿@using System.Globalization
+@model IEnumerable<ExpenseTracker.Models.Expense>
 
-	<h2>Expenses</h2>
+	<h2>Your Expenses</h2>
 	<div class="container">
 		<table class="table table-bordered">
 		<thead class="table-light" >
@@ -17,11 +18,38 @@
 				<tr>
 					<td>@expense.Date.ToShortDateString()</td>
 					<td>@expense.Description</td>
-					<td>@expense.Amount.ToString("C")</td>
+					<td>@expense.Amount.ToString("C", new CultureInfo("en-ZA"))</td>
 					<td>@expense.Type</td>
 				</tr>
 			}
 		</tbody>
 		</table>
+	<h2>Your expense over-view</h2>
+	<div>
+		<canvas style="max-width:350px;max-height:200px;" id="myChart"></canvas>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script>
+		const ctx = document.getElementById('myChart');
+		fetch('/Expense/Chart')
+		.then(response => response.json())
+		.then(data => {
+			new Chart(ctx, {
+				  type: 'doughnut',
+				  data: {
+					labels: data.map(d => d.type),
+					datasets: [{
+					 data: data.map(d => d.totalAmount),
+					}]
+				  },
+			});
+
+		})
+
+		
+	</script>
+
 
 	</div>

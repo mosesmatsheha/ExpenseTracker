@@ -35,5 +35,11 @@ namespace ExpenseTracker.Controllers
             }
             return View(expense);
         }
+        public IActionResult Chart()
+        {
+            var data = _expensesService.GetChart();
+
+            return Json(data);
+        }
     }
 }
